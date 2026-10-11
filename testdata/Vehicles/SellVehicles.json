@@ -1,0 +1,25 @@
+{
+  // Vehicle verified against the Autodata lookup by carabia-ui-tests (VIN and manual search give the same car).
+  "Default": {
+    "Vin": "2FMPK4G83GBB65542",
+    "Year": "2016",
+    "Make": "Ford",
+    "Model": "Edge",
+    "Trim": "SE",
+    "RegionalSpec": "GCC",
+    "Mileage": "80000",
+    "ExteriorColor": "White",
+    "InteriorColor": "Black",
+    "Warranty": "No",
+    "Location": {
+      "SearchText": "Dubai",
+      "SuggestionContains": "Dubai",
+      "ExpectedCity": "Dubai",
+      "ExpectedCountryCode": "AE"
+    },
+    "AskingPrice": "40000",
+    "OwnerNotesTemplate": "UI automation sample {marker} - safe to delete."
+  },
+  // Wrong length -> "VIN must be 17 characters" (client-side check in Sell.cshtml).
+  "InvalidVins": [ "ABC123", "123456789012345678" ]
+}

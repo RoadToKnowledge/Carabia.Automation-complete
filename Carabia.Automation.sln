@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{ACAC058F-8FD2-4CCA-BF3C-CB9E01FF50C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carabia.Automation.Framework", "src\Carabia.Automation.Framework\Carabia.Automation.Framework.csproj", "{78B18AE3-E922-40A5-8DD7-5698D09F4A07}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A5B2DBB2-2A4E-4DD3-B789-97599887F6BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carabia.Automation.Tests", "tests\Carabia.Automation.Tests\Carabia.Automation.Tests.csproj", "{C642FC72-0530-4C22-A121-89CB170D0030}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78B18AE3-E922-40A5-8DD7-5698D09F4A07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78B18AE3-E922-40A5-8DD7-5698D09F4A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78B18AE3-E922-40A5-8DD7-5698D09F4A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78B18AE3-E922-40A5-8DD7-5698D09F4A07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C642FC72-0530-4C22-A121-89CB170D0030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C642FC72-0530-4C22-A121-89CB170D0030}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C642FC72-0530-4C22-A121-89CB170D0030}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C642FC72-0530-4C22-A121-89CB170D0030}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{78B18AE3-E922-40A5-8DD7-5698D09F4A07} = {ACAC058F-8FD2-4CCA-BF3C-CB9E01FF50C1}
+		{C642FC72-0530-4C22-A121-89CB170D0030} = {A5B2DBB2-2A4E-4DD3-B789-97599887F6BA}
+	EndGlobalSection
+EndGlobal

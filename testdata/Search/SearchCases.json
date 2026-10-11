@@ -1,0 +1,42 @@
+{
+  // Makes that must have active listings on DEV (filter tests pick models/ranges from the live cards).
+  "MakesWithListings": [ "Audi", "BMW" ],
+
+  // General/SellingCollections.QuickFilters: slug -> word expected in the page heading (.fd-banner__title).
+  "QuickFilterCollections": {
+    "evs": "EV",
+    "gcc": "GCC",
+    "chinese-brands": "Chinese",
+    "family-car": "Family",
+    "ultra-low-mileage": "mileage",
+    "low-budget": "budget",
+    "under-warranty": "warranty",
+    "suvs": "SUV"
+  },
+
+  // SellingCollections.PrefixFilters (body-, location-, model-, under-). Must exist in DEV dictionaries.
+  "PrefixCollections": [
+    { "Path": "/sellings/body-suv", "ExpectedHeading": "SUV" },
+    { "Path": "/sellings/under-50000", "ExpectedHeading": "50" },
+    { "Path": "/sellings/location-dubai", "ExpectedHeading": "Dubai" },
+    { "Path": "/sellings/model-x5", "ExpectedHeading": "X5" }
+  ],
+
+  // POST /search (HomeController.Search).
+  "TextSearchQueries": [ "audi", "bmw" ],
+
+  // Make/model landing pages with vehicle-specific FAQs (carabia-ui-tests MakeModelFaqTests).
+  "FaqLandingPages": [
+    { "Path": "/brand/audi", "ExpectedHeading": "Audi" },
+    { "Path": "/brand/bmw", "ExpectedHeading": "BMW" },
+    { "Path": "/sellings/model-a6", "ExpectedHeading": "Audi A6" },
+    { "Path": "/sellings/model-x5", "ExpectedHeading": "BMW X5" }
+  ],
+
+  // input[name='crb_sort'] values in Views/Sellings/Partial/_FiltersPartial.cshtml.
+  "SortCases": [
+    { "Value": "cheaper", "Field": "price", "Descending": false },
+    { "Value": "expensive", "Field": "price", "Descending": true },
+    { "Value": "mileage", "Field": "mileage", "Descending": false }
+  ]
+}

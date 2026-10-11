@@ -1,0 +1,6 @@
+{
+  // Used only by the Destructive admin CRUD test. {marker} becomes AUTO-yyyyMMddHHmmss-XXXX.
+  "FaqCategoryNameTemplate": "{marker} automation category",
+  "FaqQuestionTemplate": "{marker} automation question?",
+  "FaqAnswer": "Created and removed by Carabia.Automation. Safe to delete."
+}

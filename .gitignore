@@ -1,0 +1,25 @@
+# Build
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.cache
+TestResults/
+
+# Run output (kept out of git, created per run)
+artifacts/*
+!artifacts/.gitkeep
+reports/*
+!reports/.gitkeep
+
+# Saved manual-login sessions: cookies/tokens - NEVER commit
+sessions/*
+!sessions/.gitkeep
+!sessions/README.md
+
+# Local copies of the Carabia source and reference project used while building the framework
+references/
+
+# Local overrides
+config/appsettings.*.local.json

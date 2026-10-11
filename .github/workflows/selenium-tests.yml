@@ -1,0 +1,61 @@
+name: selenium-tests
+
+# Default CI runs only tests a visitor can run (no login, no writes).
+# Buyer/Seller/Admin suites need a person to log in (phone OTP / admin password) and are run locally.
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Config environment (Dev or Prod - Prod is read-only)"
+        default: "Dev"
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: dotnet restore Carabia.Automation.sln
+      - run: dotnet build Carabia.Automation.sln --configuration Debug --no-restore
+      - name: Test discovery
+        run: dotnet test Carabia.Automation.sln --no-build --list-tests
+
+  public-tests:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      CI: "true"                                   # authenticated fixtures fail fast instead of waiting for a login
+      CARABIA_AUTOMATION_ENV: ${{ github.event.inputs.environment || 'Dev' }}
+      CARABIA_AUTOMATION__Execution__Headless: "true"
+      CARABIA_AUTOMATION__Execution__ShowStepBanner: "false"
+      CARABIA_AUTOMATION__Execution__PresentationDelayMs: "0"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Build
+        run: dotnet build Carabia.Automation.sln --configuration Debug
+      - name: Public and smoke tests (no authentication, no writes)
+        run: >
+          dotnet test Carabia.Automation.sln --configuration Debug --no-build
+          --settings carabia.runsettings
+          --filter "(TestCategory=Public|TestCategory=Smoke)&TestCategory!=RequiresManualAuthentication&TestCategory!=WritesData&TestCategory!=Destructive"
+          --logger "trx;LogFileName=public.trx" --results-directory reports/trx
+          -- NUnit.TestOutputXml=${{ github.workspace }}/reports/nunit NUnit.OutputXmlFolderMode=AbsoluteFolder
+      - name: Upload reports and failure artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: carabia-automation-results
+          path: |
+            reports/
+            artifacts/
+          if-no-files-found: ignore

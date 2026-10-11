@@ -1,0 +1,7 @@
+{
+  // Stripe public TEST cards (https://docs.stripe.com/testing). They only work with pk_test_ keys
+  // and can never move real money. Payment write tests also refuse to run unless the page key is pk_test_.
+  "RequiredPublishableKeyPrefix": "pk_test_",
+  "SuccessCard": { "Number": "4242424242424242", "Expiry": "12/34", "Cvc": "123", "Description": "Visa - succeeds" },
+  "DeclinedCard": { "Number": "4000000000000002", "Expiry": "12/34", "Cvc": "123", "Description": "Generic decline" }
+}

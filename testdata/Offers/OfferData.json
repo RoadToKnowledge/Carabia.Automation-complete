@@ -1,0 +1,11 @@
+{
+  // payment.js: an offer must be > 0 and >= data-min-offer (75% of the asking price).
+  "ValidOfferRatio": 0.9,
+  "TooLowOfferRatio": 0.5,
+  "CounterOfferRatio": 0.95,
+
+  // Listing used by WRITE offer tests (buyer offer, seller accept/decline/counter).
+  // MUST be a listing created by automation with the Seller test account (see SubmissionTests).
+  // Leave null to skip all offer write tests.
+  "AutomationSellingId": null
+}

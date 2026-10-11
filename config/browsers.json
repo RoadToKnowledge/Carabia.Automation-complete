@@ -1,0 +1,5 @@
+{
+  // Reference only: supported values for Execution.Browser. Selenium Manager downloads the matching driver.
+  "Chrome": { "Driver": "chromedriver (Selenium Manager)", "Headless": "--headless=new" },
+  "Edge": { "Driver": "msedgedriver (Selenium Manager)", "Headless": "--headless=new" }
+}

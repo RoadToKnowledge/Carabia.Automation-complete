@@ -1,0 +1,52 @@
+{
+  // Public routes from Program.cs route table / controllers that must answer 200 with page content.
+  "PublicRoutes": [ "/", "/sellings", "/sellings/sold", "/auctions", "/sitemap", "/personal/sell", "/brand/bmw", "/news" ],
+
+  // InfoController.Page aliases linked from the footer (Administrator > Pages content).
+  "InfoPageAliases": [ "how-it-works", "about-us", "faq", "privacy-policy", "user-agreement" ],
+
+  // ArticlesController.Index categories linked from the footer (NewsCategory titles).
+  "ArticleCategories": [ "news", "overviews", "buying-guides", "selling-guides", "partners" ],
+
+  // PersonalController ([Authorize(Roles = "client")]) GET pages.
+  "PersonalRoutes": [ "/personal/buying", "/personal/selling", "/personal/favorites", "/personal/settings", "/personal/notifications", "/personal/payments" ],
+
+  // Footer menu (Views/Shared/_FooterPartial.cshtml) - verified by carabia-ui-tests FooterLinkTests.
+  "FooterInternalLinks": [
+    { "Label": "Used Cars", "Path": "/sellings" },
+    { "Label": "How Carabia works", "Path": "/info/how-it-works" },
+    { "Label": "About Us", "Path": "/info/about-us" },
+    { "Label": "News", "Path": "/news" },
+    { "Label": "Vehicle Overviews", "Path": "/overviews" },
+    { "Label": "Contact Us", "Path": "/contact-us" },
+    { "Label": "Buying Guides", "Path": "/buying-guides" },
+    { "Label": "Selling Guides", "Path": "/selling-guides" },
+    { "Label": "Our Partners", "Path": "/partners" },
+    { "Label": "FAQs", "Path": "/info/faq" },
+    { "Label": "Privacy Policy", "Path": "/info/privacy-policy" },
+    { "Label": "User Agreement", "Path": "/info/user-agreement" },
+    { "Label": "Sell My Car", "Path": "/personal/sell" },
+    { "Label": "Carabia logo", "Path": "/" }
+  ],
+  "FooterExternalLinks": [
+    { "Label": "WhatsApp", "Selector": "a[href^='https://wa.me/']", "Href": "https://wa.me/971557358770", "NewTab": true },
+    { "Label": "Support email", "Selector": "a[href^='mailto:']", "Href": "mailto:contact@carabiacars.com", "NewTab": false },
+    { "Label": "LinkedIn", "Selector": ".crb-social-icon[href*='linkedin.com']", "Href": "https://www.linkedin.com/company/carabiacars", "NewTab": true },
+    { "Label": "TikTok", "Selector": ".crb-social-icon[href*='tiktok.com']", "Href": "https://www.tiktok.com/@carabiacars", "NewTab": true },
+    { "Label": "Instagram", "Selector": ".crb-social-icon[href*='instagram.com']", "Href": "https://www.instagram.com/carabiacars/", "NewTab": true }
+  ],
+
+  // Views/Shared/Partial/_SitemapLinksPartial.cshtml groups (carabia-ui-tests SitemapLinkTests).
+  "SitemapGroups": [
+    { "Group": "Trending Searches", "PathPrefix": "/sellings/", "MinimumLinks": 8, "ClickPath": "/sellings/evs" },
+    { "Group": "Popular Locations", "PathPrefix": "/sellings", "MinimumLinks": 2, "ClickPath": "/sellings" },
+    { "Group": "Popular Makes", "PathPrefix": "/brand/", "MinimumLinks": 18, "ClickPath": "/brand/mercedes-benz" },
+    { "Group": "Popular Budgets", "PathPrefix": "/sellings/under-", "MinimumLinks": 9, "ClickPath": "/sellings/under-25000" },
+    { "Group": "Popular Body Types", "PathPrefix": "/sellings/body-", "MinimumLinks": 9, "ClickPath": "/sellings/body-suv" },
+    { "Group": "Popular Models", "PathPrefix": "/sellings/model-", "MinimumLinks": 18, "ClickPath": "/sellings/model-patrol" }
+  ],
+  "SitemapSectionPages": [ "/", "/sellings", "/brand/bmw" ],
+
+  // Optional regression case from carabia-ui-tests: a listing that must stay featured on the home page. Empty = skipped.
+  "FeaturedHomeListingPath": "/sellings/1056_audi-a6"
+}
