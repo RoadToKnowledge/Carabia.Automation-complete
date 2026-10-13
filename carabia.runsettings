@@ -5,7 +5,7 @@
     <TestSessionTimeout>21600000</TestSessionTimeout>
   </RunConfiguration>
   <NUnit>
-    <!-- One browser at a time by default. Scripts can override: -- NUnit.NumberOfTestWorkers=4 -->
+    <!-- One browser at a time by default. Scripts can override: NUnit.NumberOfTestWorkers=4 -->
     <NumberOfTestWorkers>1</NumberOfTestWorkers>
     <!-- NUnit 3 XML result per run (relative to the test output folder; scripts pass an absolute path). -->
     <TestOutputXml>TestResults/nunit</TestOutputXml>
