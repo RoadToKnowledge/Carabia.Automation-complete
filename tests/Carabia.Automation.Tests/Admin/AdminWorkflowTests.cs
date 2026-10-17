@@ -3,6 +3,7 @@ using Carabia.Automation.Framework.Flows;
 using Carabia.Automation.Framework.Pages.Admin;
 using Carabia.Automation.Framework.Utilities;
 using Carabia.Automation.Tests.Base;
+using OpenQA.Selenium;
 
 namespace Carabia.Automation.Tests.Admin;
 
@@ -55,8 +56,28 @@ public sealed class AdminWorkflowTests : AdminTestBase
         var href = page.DetailsHrefs().FirstOrDefault();
         if (href is null) Assert.Inconclusive("No selling offers on this environment.");
         page.OpenPath(new Uri(href!).PathAndQuery, "Selling offer details");
-        Assert.That(page.HeadingTexts(), Has.Some.StartsWith("Selling Offer #"));
+        Assert.Multiple(() =>
+        {
+            Assert.That(page.HeadingTexts(), Has.Some.StartsWith("Selling Offer #"));
+            Assert.That(page.TableCount > 0 || page.HeadingTexts().Count > 1, Is.True,
+                "Details page should have detail tables or multiple content sections.");
+            Assert.That(page.HasLayout, Is.True, "Admin layout missing on offer details page.");
+        });
         // Accept / Decline buttons are not clicked: accepting can capture a buyer payment.
+    }
+
+    [Test]
+    [Category(TestCategories.Admin)]
+    public void Selling_Offer_Details_Page_Has_Action_Buttons_Not_Clicked()
+    {
+        var page = new SellingOffersPage(Session);
+        page.OpenPath("/administrator/sellingoffers", "Selling offers");
+        var href = page.DetailsHrefs().FirstOrDefault();
+        if (href is null) Assert.Inconclusive("No selling offers on this environment.");
+        page.OpenPath(new Uri(href!).PathAndQuery, "Selling offer details");
+        var buttons = Session.Driver.FindElements(By.CssSelector(".dashboard-content .btn"));
+        Assert.That(buttons.Count, Is.GreaterThan(0), "Details page should have action buttons.");
+        // Accept / Decline are NEVER clicked: accepting can capture a buyer payment.
     }
 
     [TestCase("/administrator/moderation/next", "There are no offers available for moderation")]
@@ -72,6 +93,8 @@ public sealed class AdminWorkflowTests : AdminTestBase
             {
                 Assert.That(page.HasModerationForm, Is.True, "A moderation item must render its form.");
                 Assert.That(page.HasApproveAction, Is.True);
+                Assert.That(page.HasDeclineAction, Is.True, "A moderation item must offer a Decline action.");
+                Assert.That(page.HasContentArea, Is.True, "A moderation item must show content to review.");
             });
         // Approve / Decline / Remove are never clicked on real submissions.
     }
@@ -122,6 +145,39 @@ public sealed class AdminWorkflowTests : AdminTestBase
         var check = new FaqAdminPage(Session);
         check.OpenPath(FaqAdminPage.IndexPath, "FAQ");
         Assert.That(check.HasCategoryRow(renamed) || check.HasCategoryRow(name), Is.False, "Cleanup failed: the automation category still exists.");
+    }
+
+    [Test]
+    [Category(TestCategories.Admin)]
+    public void Admin_Can_View_Test_Drive_Request_Details()
+    {
+        var page = new AdminPage(Session);
+        page.OpenPath("/administrator/testdrive", "Test drives");
+
+        var tabs = new[] { "Pending", "Approved", "Scheduled" };
+        string? detailHref = null;
+        foreach (var tab in tabs)
+        {
+            page.ClickTab(tab);
+            var viewLinks = Session.Driver.FindElements(
+                By.XPath("//table[contains(@class,'table')]//a[normalize-space(.)='View' or normalize-space(.)='Details']"));
+            if (viewLinks.Count > 0)
+            {
+                detailHref = viewLinks.First().GetDomProperty("href");
+                break;
+            }
+        }
+        if (detailHref is null)
+            Assert.Inconclusive("No test drive requests found on any tab.");
+
+        page.OpenPath(new Uri(detailHref).PathAndQuery, "Test drive details");
+        Assert.Multiple(() =>
+        {
+            Assert.That(page.HeadingTexts(), Is.Not.Empty, "Details page has no headings.");
+            Assert.That(page.HasLayout, Is.True, "Admin layout missing on details page.");
+            Assert.That(Session.Driver.FindElements(By.CssSelector(".dashboard-content")).Count,
+                Is.GreaterThan(0), "No content area rendered on details page.");
+        });
     }
 }
 

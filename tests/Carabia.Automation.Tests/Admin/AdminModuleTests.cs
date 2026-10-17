@@ -1,6 +1,7 @@
 using Carabia.Automation.Framework.Pages.Admin;
 using Carabia.Automation.Framework.Utilities;
 using Carabia.Automation.Tests.Base;
+using OpenQA.Selenium;
 
 namespace Carabia.Automation.Tests.Admin;
 
@@ -135,5 +136,30 @@ public sealed class AdminModuleTests : AdminTestBase
         };
         Assert.That(AdminModuleCatalog.All.Select(m => m.Name), Is.EquivalentTo(expected));
         Assert.That(UrlHelper.PathOf(Settings.BaseUrl), Is.Not.Null);
+    }
+
+    [TestCaseSource(nameof(TableModules))]
+    public void Module_Table_Has_At_Least_Two_Columns(AdminModule module)
+    {
+        var page = new AdminPage(Session);
+        page.OpenPath(module.Path, module.Name);
+        if (page.TableCount == 0) Assert.Inconclusive($"{module.Name} has no table.");
+        var columns = page.ColumnHeaders();
+        Assert.That(columns.Count, Is.GreaterThanOrEqualTo(2),
+            $"{module.Name} table has only {columns.Count} column(s): {string.Join(", ", columns)}");
+        TestContext.Out.WriteLine($"{module.Name} columns: {string.Join(" | ", columns)}");
+    }
+
+    [TestCaseSource(nameof(TableModules))]
+    public void Module_Table_Row_Cell_Count_Matches_Header_Count(AdminModule module)
+    {
+        var page = new AdminPage(Session);
+        page.OpenPath(module.Path, module.Name);
+        if (page.RowCount == 0) Assert.Inconclusive($"{module.Name} has no rows.");
+        var headerCount = page.ColumnHeaders().Count;
+        var firstRowCells = Session.Driver.FindElements(
+            By.CssSelector(".dashboard-content table.table tbody tr:first-child td"));
+        Assert.That(firstRowCells.Count, Is.InRange(headerCount - 1, headerCount + 2),
+            $"Row has {firstRowCells.Count} cells but header has {headerCount} columns.");
     }
 }

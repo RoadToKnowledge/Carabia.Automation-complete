@@ -1,6 +1,6 @@
 {
   // Public routes from Program.cs route table / controllers that must answer 200 with page content.
-  "PublicRoutes": [ "/", "/sellings", "/sellings/sold", "/auctions", "/sitemap", "/personal/sell", "/brand/bmw", "/news" ],
+  "PublicRoutes": [ "/", "/sellings", "/sellings/sold", "/auctions", "/sitemap", "/personal/sell", "/brand/bmw", "/news", "/contact-us", "/sellings/suvs" ],
 
   // InfoController.Page aliases linked from the footer (Administrator > Pages content).
   "InfoPageAliases": [ "how-it-works", "about-us", "faq", "privacy-policy", "user-agreement" ],

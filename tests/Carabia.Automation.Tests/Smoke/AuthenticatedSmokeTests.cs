@@ -23,6 +23,21 @@ public sealed class BuyerSmokeTests : BuyerTestBase
         garage.OpenTab(MyGaragePage.GarageTab.Buying);
         Assert.That(garage.ActiveTabText, Is.EqualTo("Buying"));
     }
+
+    [TestCase("/personal/buying")]
+    [TestCase("/personal/settings")]
+    [TestCase("/personal/notifications")]
+    public void Buyer_Personal_Page_Loads(string path)
+    {
+        Session.Open(path);
+        var page = new Framework.Pages.Public.GenericPage(Session);
+        Assert.Multiple(() =>
+        {
+            Assert.That(page.ShowsBrowserErrorPage, Is.False, $"{path}: browser error.");
+            Assert.That(page.IsNotFoundPage, Is.False, $"{path}: 404 page.");
+            Assert.That(page.BodyText.Trim(), Is.Not.Empty, $"{path}: empty body.");
+        });
+    }
 }
 
 [TestFixture]
@@ -43,6 +58,20 @@ public sealed class SellerSmokeTests : SellerTestBase
         garage.OpenTab(MyGaragePage.GarageTab.Selling);
         Assert.That(garage.ActiveTabText, Is.EqualTo("Selling"));
     }
+
+    [TestCase("/personal/selling")]
+    [TestCase("/personal/payments")]
+    public void Seller_Personal_Page_Loads(string path)
+    {
+        Session.Open(path);
+        var page = new Framework.Pages.Public.GenericPage(Session);
+        Assert.Multiple(() =>
+        {
+            Assert.That(page.ShowsBrowserErrorPage, Is.False, $"{path}: browser error.");
+            Assert.That(page.IsNotFoundPage, Is.False, $"{path}: 404 page.");
+            Assert.That(page.BodyText.Trim(), Is.Not.Empty, $"{path}: empty body.");
+        });
+    }
 }
 
 [TestFixture]
@@ -58,6 +87,18 @@ public sealed class AdminSmokeTests : AdminTestBase
         {
             Assert.That(page.HasLayout, Is.True, "Admin layout (left navigation, top bar) is missing.");
             Assert.That(page.HeadingTexts(), Does.Contain("Sellings"));
+        });
+    }
+
+    [Test]
+    public void Administrator_Can_Open_Payments_Module()
+    {
+        var page = new AdminPage(Session);
+        page.OpenPath("/administrator/payments", "Administrator > Payments");
+        Assert.Multiple(() =>
+        {
+            Assert.That(page.HasLayout, Is.True, "Admin layout is missing.");
+            Assert.That(page.HeadingTexts(), Does.Contain("Payments"));
         });
     }
 }

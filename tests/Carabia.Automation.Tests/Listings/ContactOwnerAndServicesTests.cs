@@ -120,6 +120,11 @@ public sealed class BuyerListingInteractionTests : BuyerTestBase
         // The card keeps "require-login"; auth-popup.js sees the signed-in client and opens the dialog instead of the login popup.
         page.Services.ClickInspection();
         Session.WaitFor("the inspection dialog (#lps-as-modal)", _ => page.Services.IsInspectionModalOpen);
+        Assert.Multiple(() =>
+        {
+            Assert.That(page.Services.IsInspectionModalOpen, Is.True, "Inspection dialog did not open.");
+            Assert.That(page.Services.HasInspectionFormFields, Is.True, "Inspection dialog must have form input fields.");
+        });
         page.Services.CloseInspectionModal();
         // "Send" (POST /System/AddInspectionReportRequest) is not clicked: it creates a service request.
     }

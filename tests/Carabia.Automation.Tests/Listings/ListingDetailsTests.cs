@@ -88,7 +88,13 @@ public sealed class ListingDetailsTests : UiTestBase
     public void Ask_A_Question_Links_To_Comment_Section()
     {
         var page = OpenFirstListing();
-        Assert.That(page.HasAskQuestion, Is.True, "'Ask a Question' (#ask-question) is missing.");
+        Assert.Multiple(() =>
+        {
+            Assert.That(page.HasAskQuestion, Is.True, "'Ask a Question' (#ask-question) is missing.");
+            Assert.That(page.HasCommentTextarea, Is.True, "Comment textarea is missing in the #ask-question section.");
+            Assert.That(page.HasCommentSubmitButton, Is.True, "Comment submit button is missing in the #ask-question section.");
+        });
+        // Submit/Post is NEVER clicked.
     }
 
     [Test]

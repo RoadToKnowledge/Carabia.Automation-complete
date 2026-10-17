@@ -44,6 +44,7 @@ public sealed class AdditionalServicesComponent(BrowserSession session) : Compon
     }
 
     public bool IsInspectionModalOpen => Elements.IsDisplayed(InspectionModal);
+    public bool HasInspectionFormFields => Driver.FindElements(By.CssSelector("#lps-as-modal input, #lps-as-modal select, #lps-as-modal textarea")).Count > 0;
 
     public void CloseInspectionModal()
     {

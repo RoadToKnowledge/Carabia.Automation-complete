@@ -38,11 +38,18 @@ public sealed class ModerationPage(BrowserSession session) : AdminPage(session)
     private static readonly By EmptyMessage = By.CssSelector(".dashboard-content .pageheader-title.text-center");
     private static readonly By ModerationForm = By.CssSelector(".dashboard-content form[method='post']");
     private static readonly By ApproveButtons = By.CssSelector(".dashboard-content button[type='submit'][data-approve='true'], .dashboard-content button.btn-primary[type='submit']");
+    private static readonly By DeclineButtons = By.CssSelector(
+        ".dashboard-content button[type='submit'].btn-danger, " +
+        ".dashboard-content button[type='submit'][data-approve='false']");
+    private static readonly By ModerationContentArea = By.CssSelector(
+        ".dashboard-content .card-body, .dashboard-content .form-group");
 
     public bool IsEmpty => Elements.IsDisplayed(EmptyMessage);
     public string EmptyText => Driver.FindElements(EmptyMessage).FirstOrDefault()?.Text.Trim() ?? string.Empty;
     public bool HasModerationForm => Elements.Exists(ModerationForm);
     public bool HasApproveAction => Elements.Exists(ApproveButtons);
+    public bool HasDeclineAction => Elements.Exists(DeclineButtons);
+    public bool HasContentArea => Elements.Exists(ModerationContentArea);
 }
 
 /// <summary>AutodataController (admin) - two import buttons .js-import-tree with data-url. Never clicked by tests.</summary>

@@ -21,6 +21,8 @@ public sealed class ListingDetailsPage(BrowserSession session) : PageBase(sessio
     private static readonly By WishlistButton = By.CssSelector(".lps-btn-wishlist");
     private static readonly By AskQuestionLink = By.CssSelector("a.lps-btn-ask");
     private static readonly By CommentsSection = By.Id("ask-question");
+    private static readonly By CommentTextarea = By.CssSelector("#ask-question textarea, #ask-question .comment-form textarea");
+    private static readonly By CommentSubmitButton = By.CssSelector("#ask-question button[type='submit'], #ask-question .btn-submit");
     private static readonly By BackToListings = By.Id("backToListingBtn");
     private static readonly By RelatedCards = By.CssSelector(".listing-card");
 
@@ -50,6 +52,8 @@ public sealed class ListingDetailsPage(BrowserSession session) : PageBase(sessio
     public string SellerName => Driver.FindElements(SellerCard).FirstOrDefault()?.Text.Trim() ?? string.Empty;
     public int VinFieldCount => Driver.FindElements(VinFields).Count;
     public bool HasAskQuestion => Elements.Exists(AskQuestionLink) && Elements.Exists(CommentsSection);
+    public bool HasCommentTextarea => Elements.Exists(CommentTextarea);
+    public bool HasCommentSubmitButton => Elements.Exists(CommentSubmitButton);
     public bool HasBackToListings => Elements.Exists(BackToListings);
     public int RelatedListingCount => Driver.FindElements(RelatedCards).Count;
 
