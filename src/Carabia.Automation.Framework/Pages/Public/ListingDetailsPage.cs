@@ -25,6 +25,7 @@ public sealed class ListingDetailsPage(BrowserSession session) : PageBase(sessio
     private static readonly By CommentSubmitButton = By.CssSelector("#ask-question button[type='submit'], #ask-question .btn-submit");
     private static readonly By BackToListings = By.Id("backToListingBtn");
     private static readonly By RelatedCards = By.CssSelector(".listing-card");
+    private static readonly By RelatedCardLinks = By.CssSelector(".listing-card a[href*='/sellings/']");
 
     public GalleryComponent Gallery { get; } = new(session);
     public FeaturesComponent Features { get; } = new(session);
@@ -56,6 +57,7 @@ public sealed class ListingDetailsPage(BrowserSession session) : PageBase(sessio
     public bool HasCommentSubmitButton => Elements.Exists(CommentSubmitButton);
     public bool HasBackToListings => Elements.Exists(BackToListings);
     public int RelatedListingCount => Driver.FindElements(RelatedCards).Count;
+    public int RelatedListingLinkCount => Driver.FindElements(RelatedCardLinks).Count;
 
     public IWebElement? VisibleWishlistButton => Driver.FindElements(WishlistButton).FirstOrDefault(b => b.Displayed);
 

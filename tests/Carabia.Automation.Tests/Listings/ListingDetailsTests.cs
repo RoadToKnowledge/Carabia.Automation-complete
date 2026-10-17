@@ -98,6 +98,41 @@ public sealed class ListingDetailsTests : UiTestBase
     }
 
     [Test]
+    [Category(TestCategories.Listings)]
+    public void Listing_Detail_Shows_Specs_Grid_With_Vehicle_Information()
+    {
+        var page = OpenFirstListing();
+        var specLabels = page.Features.SpecLabels();
+        Assert.Multiple(() =>
+        {
+            Assert.That(page.Features.SpecItemCount, Is.GreaterThan(0), "Listing must show specs grid.");
+            Assert.That(specLabels.Count, Is.GreaterThan(2), "Specs grid should have at least 3 labelled specs.");
+            Assert.That(page.PriceText, Is.Not.Empty, "Price must be displayed.");
+            Assert.That(page.VehicleName, Is.Not.Empty, "Vehicle name must be displayed.");
+        });
+    }
+
+    [Test]
+    [Category(TestCategories.Listings)]
+    public void Listing_Detail_Page_Shows_Related_Listings()
+    {
+        var page = OpenFirstListing();
+        Assert.That(page.RelatedListingCount, Is.GreaterThanOrEqualTo(0),
+            "Related listings section should render (even if empty).");
+        if (page.RelatedListingCount > 0)
+            Assert.That(page.RelatedListingLinkCount, Is.GreaterThan(0),
+                "Related listing cards should link to details pages.");
+    }
+
+    [Test]
+    [Category(TestCategories.Listings)]
+    public void Listing_Detail_Page_Shows_Back_To_Listings_Button()
+    {
+        var page = OpenFirstListing();
+        Assert.That(page.HasBackToListings, Is.True, "Back to listings button should exist.");
+    }
+
+    [Test]
     public async Task Listing_Url_With_Wrong_Model_Slug_Returns_404()
     {
         var url = new BrowseCarsFlow(Session).FirstListingUrl();

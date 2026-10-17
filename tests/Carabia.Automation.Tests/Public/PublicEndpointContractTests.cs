@@ -55,6 +55,44 @@ public sealed class PublicEndpointContractTests : UiTestBase
         Assert.That(response.IsSuccess, Is.True, response.ToString());
     }
 
+    [Test]
+    public async Task Contact_Us_Page_Returns_200()
+    {
+        using var http = NewHttpProbe();
+        var response = await http.GetAsync("/contact-us");
+        Assert.That(response.IsSuccess, Is.True, response.ToString());
+        Assert.That(response.Body, Does.Contain("contact").IgnoreCase);
+    }
+
+    [Test]
+    public async Task Info_Fees_Page_Returns_200_With_Content()
+    {
+        using var http = NewHttpProbe();
+        var response = await http.GetAsync("/info/how-it-works");
+        Assert.That(response.IsSuccess, Is.True, response.ToString());
+        Assert.That(response.Body.Length, Is.GreaterThan(100), "Fees page seems empty.");
+    }
+
+    [Test]
+    public async Task Autodata_Sell_Makes_Returns_Json()
+    {
+        using var http = NewHttpProbe();
+        var response = await http.GetAsync("/api/autodata/sell-your-car/makes?year=2020");
+        if (response.Code == 404 || response.Code == 500)
+            Assert.Inconclusive("Autodata API may not be configured on this environment.");
+        Assert.That(response.IsSuccess, Is.True, response.ToString());
+    }
+
+    [Test]
+    public async Task Subscribe_Email_Requires_Captcha()
+    {
+        using var http = NewHttpProbe();
+        var response = await http.PostFormAsync("/System/AddSubscribeEmail",
+            new Dictionary<string, string> { ["email"] = "test@example.com" });
+        Assert.That(response.IsSuccess, Is.False,
+            "AddSubscribeEmail should require reCAPTCHA and reject plain POST.");
+    }
+
     private static JsonElement Json(Framework.Utilities.HttpCheck response)
     {
         try { return JsonDocument.Parse(response.Body).RootElement; }

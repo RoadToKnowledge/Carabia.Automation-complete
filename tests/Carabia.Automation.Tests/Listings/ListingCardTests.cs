@@ -1,6 +1,7 @@
 using Carabia.Automation.Framework.Pages.Public;
 using Carabia.Automation.Framework.Utilities;
 using Carabia.Automation.Tests.Base;
+using OpenQA.Selenium;
 
 namespace Carabia.Automation.Tests.Listings;
 
@@ -59,6 +60,33 @@ public sealed class ListingCardTests : UiTestBase
         var broken = images.Where(i => !JavaScriptHelper.IsImageLoaded(Session.Driver, i.Image))
             .Select(i => $"{i.Title}: {i.Image.GetDomProperty("src")}").ToList();
         Assert.That(broken, Is.Empty, $"{broken.Count} of {images.Count} card images did not load:\n" + string.Join("\n", broken));
+    }
+
+    [Test]
+    [Category(TestCategories.Listings)]
+    public void Listing_Card_Images_Load_Without_Errors()
+    {
+        var search = new SearchPage(Session);
+        search.Open();
+        search.WaitForCards();
+        var cards = search.Cards();
+        if (cards.Count == 0) Assert.Inconclusive("No listing cards found.");
+
+        var brokenImages = new List<string>();
+        foreach (var card in cards.Take(6))
+        {
+            var images = card.Root.FindElements(By.CssSelector(".listing-card-image__img, img"));
+            foreach (var img in images)
+            {
+                if (!img.Displayed) continue;
+                var result = (Session.Driver as IJavaScriptExecutor)!
+                    .ExecuteScript("return arguments[0].complete && arguments[0].naturalWidth > 0;", img);
+                if (result is not true)
+                    brokenImages.Add(img.GetDomAttribute("src") ?? "(no src)");
+            }
+        }
+        Assert.That(brokenImages, Is.Empty,
+            $"Broken images found: {string.Join(", ", brokenImages.Take(5))}");
     }
 
     [TestCase(1)]

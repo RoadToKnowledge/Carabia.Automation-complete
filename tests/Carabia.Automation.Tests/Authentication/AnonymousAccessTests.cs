@@ -64,6 +64,41 @@ public sealed class AnonymousAccessTests : UiTestBase
     }
 
     [Test]
+    [Category(TestCategories.Public)]
+    [Category(TestCategories.Smoke)]
+    public void Login_Popup_Country_Dropdown_Has_India_Option()
+    {
+        var home = new HomePage(Session);
+        home.Open();
+        home.LoginPopup.Open();
+        Assert.That(home.LoginPopup.TrySelectCountry("+91"), Is.True,
+            "Country dropdown should list India (+91).");
+        Assert.Multiple(() =>
+        {
+            Assert.That(home.LoginPopup.SelectedCountryValue, Is.EqualTo("+91"));
+            Assert.That(home.LoginPopup.SelectedCountryText, Does.Contain("India").And.Contain("+91"),
+                "Label should update to show India and +91.");
+        });
+    }
+
+    [Test]
+    [Category(TestCategories.Public)]
+    [Category(TestCategories.Smoke)]
+    public void Login_Popup_Phone_Input_Exists_And_Continue_Button_Starts_Disabled()
+    {
+        var home = new HomePage(Session);
+        home.Open();
+        home.LoginPopup.Open();
+        Assert.Multiple(() =>
+        {
+            Assert.That(home.LoginPopup.HasPhoneInput, Is.True, "Phone input must be visible.");
+            Assert.That(home.LoginPopup.HasContinueButton, Is.True, "Continue button must be present.");
+            Assert.That(home.LoginPopup.ContinueIsDisabled, Is.True,
+                "Continue must be disabled when no phone number is entered.");
+        });
+    }
+
+    [Test]
     public void Identity_Route_Redirects_Visitor_To_Home_With_Login_Prompt()
     {
         Session.Open("/identity");

@@ -27,6 +27,7 @@ public sealed class BuyerSmokeTests : BuyerTestBase
     [TestCase("/personal/buying")]
     [TestCase("/personal/settings")]
     [TestCase("/personal/notifications")]
+    [TestCase("/personal/payments")]
     public void Buyer_Personal_Page_Loads(string path)
     {
         Session.Open(path);

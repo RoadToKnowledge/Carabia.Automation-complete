@@ -100,6 +100,7 @@ public sealed class SellerSellFlowTests : SellerTestBase
             Assert.That(summary.SummaryPhotoCount, Is.EqualTo($"{Photos.Length} photos uploaded"));
             Assert.That(flow.Page.SummaryText("summaryOwnerVerificationText"), Is.EqualTo("Mulkiya not uploaded"));
             Assert.That(summary.SummaryPaymentTotal, Is.EqualTo(0m), "Free plan + No Boost must cost nothing.");
+            Assert.That(flow.Page.SummaryCoverSource, Is.Not.Empty, "Summary must show a cover image.");
             Assert.That(flow.Page.SummarySubmitVisible, Is.True);
             Assert.That(flow.Page.Wizard.IsStepDisplayed(10), Is.False, "The test must stop before payment.");
         });

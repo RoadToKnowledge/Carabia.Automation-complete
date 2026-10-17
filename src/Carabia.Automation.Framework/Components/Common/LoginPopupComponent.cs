@@ -20,6 +20,10 @@ public sealed class LoginPopupComponent(BrowserSession session) : ComponentBase(
 
     public bool IsOpen => Elements.IsDisplayed(ActiveOverlay) && Elements.IsDisplayed(PhoneInput);
 
+    public bool HasPhoneInput => Elements.IsDisplayed(PhoneInput);
+
+    public bool HasContinueButton => Driver.FindElements(ContinueButton).Any(b => b.Displayed);
+
     public void WaitUntilOpen(string reason) =>
         Session.WaitFor($"the login popup to open ({reason})", _ => IsOpen);
 

@@ -19,6 +19,47 @@ public sealed class FaqTests : UiTestBase
         Assert.That(failures, Is.Empty, string.Join("\n", failures));
     }
 
+    [Test]
+    [Category(TestCategories.Public)]
+    [Category(TestCategories.Seo)]
+    public void Brand_Landing_Page_Audi_Shows_Working_Faqs()
+    {
+        var brand = new BrandPage(Session);
+        brand.OpenBrand("audi");
+        var faq = brand.Faq;
+        if (faq.Count == 0) Assert.Inconclusive("No FAQ items on /brand/audi.");
+        Assert.That(faq.Count, Is.GreaterThanOrEqualTo(3), "Brand page should have at least 3 FAQs.");
+        var question = faq.OpenAndCloseQuestion(0);
+        Assert.That(question, Is.Not.Empty, "First FAQ question must have content.");
+    }
+
+    [Test]
+    [Category(TestCategories.Public)]
+    [Category(TestCategories.Seo)]
+    public void Brand_Landing_Page_Bmw_Shows_Working_Faqs()
+    {
+        var brand = new BrandPage(Session);
+        brand.OpenBrand("bmw");
+        var faq = brand.Faq;
+        if (faq.Count == 0) Assert.Inconclusive("No FAQ items on /brand/bmw.");
+        Assert.That(faq.Count, Is.GreaterThanOrEqualTo(3));
+        var question = faq.OpenAndCloseQuestion(0);
+        Assert.That(question, Is.Not.Empty);
+    }
+
+    [Test]
+    [Category(TestCategories.Public)]
+    [Category(TestCategories.Seo)]
+    public void Model_Collection_Page_Shows_Working_Faqs()
+    {
+        Session.Open("/sellings/model-a6");
+        var faq = new FaqComponent(Session);
+        if (faq.Count == 0) Assert.Inconclusive("No FAQ items on /sellings/model-a6 — model may not exist.");
+        Assert.That(faq.Count, Is.GreaterThanOrEqualTo(1));
+        var question = faq.OpenAndCloseQuestion(0);
+        Assert.That(question, Is.Not.Empty);
+    }
+
     [TestCaseSource(typeof(TestData), nameof(TestData.FaqLandingPages))]
     public void Make_Or_Model_Landing_Page_Faqs_Open_And_Close(string path, string vehicle)
     {

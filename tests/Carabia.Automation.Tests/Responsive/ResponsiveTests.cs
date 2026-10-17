@@ -19,7 +19,7 @@ public sealed class ResponsiveTests : UiTestBase
 
     private static IEnumerable<TestCaseData> ViewportsAndPages() =>
         from v in Viewport.All
-        from p in new[] { "/", "/sellings", "/personal/sell", "/sitemap", "/info/about-us" }
+        from p in new[] { "/", "/sellings", "/personal/sell", "/sitemap", "/info/about-us", "/brand/bmw", "/news", "/info/how-it-works", "/contact-us" }
         select new TestCaseData(v, p).SetArgDisplayNames(v.Name, p);
 
     [TestCaseSource(nameof(ViewportsAndPages))]

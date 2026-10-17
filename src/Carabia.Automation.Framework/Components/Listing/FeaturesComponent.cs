@@ -24,6 +24,14 @@ public sealed class FeaturesComponent(BrowserSession session) : ComponentBase(se
             .GroupBy(s => s.Label, StringComparer.OrdinalIgnoreCase)
             .ToDictionary(g => g.Key, g => g.First().Value, StringComparer.OrdinalIgnoreCase);
 
+    public int SpecItemCount => Driver.FindElements(SpecItems).Count;
+
+    public IReadOnlyList<string> SpecLabels() =>
+        Driver.FindElements(SpecItems)
+            .Select(item => item.FindElements(By.CssSelector(".lps-spec-label")).FirstOrDefault()?.Text.Trim() ?? string.Empty)
+            .Where(t => t.Length > 0)
+            .ToList();
+
     /// <summary>The first visible feature grid (desktop and mobile copies both exist in the markup).</summary>
     public IWebElement? VisibleFeatureGrid => Driver.FindElements(FeatureGrids).FirstOrDefault(g => g.Displayed);
 

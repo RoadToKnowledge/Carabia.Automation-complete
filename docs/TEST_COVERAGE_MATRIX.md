@@ -154,7 +154,7 @@ Abbreviations: PO = page object/component, F = flow.
 | Views | - | Home/Index, Sellings/*, Auctions/Index, Info/Page | - | - | rel=canonical, title, meta description, h1 | Public | PageBase | CanonicalAndRedirectTests.Page_Has_*, Listing_Detail_Canonical_* | UI | Automated | | DONE |
 | Middleware | RedirectsMiddleware (redirects.txt) | - | legacy URLs | - | Legacy redirects | Public | - | - | - | N/A | Inventory-specific URLs; not asserted | N/A |
 | All | - | - | /, /sellings, /sitemap | - | Broken internal links, home images | Public | HttpProbe | BrokenLinkTests.* | HTTP+UI | Automated | | DONE |
-| Responsive | - | layouts | 5 pages x 3 viewports | - | No horizontal scroll, header/drawer, hero, cards, details, sell step 1 | Public | Viewport, WindowManager | ResponsiveTests.* | UI | Automated | | DONE |
+| Responsive | - | layouts | 9 pages x 3 viewports | - | No horizontal scroll (/, /sellings, /personal/sell, /sitemap, /info/about-us, /brand/bmw, /news, /info/how-it-works, /contact-us), header/drawer, hero, cards, details, sell step 1 | Public | Viewport, WindowManager | ResponsiveTests.* | UI | Automated | | DONE |
 
 ## Administrator area (every controller)
 
@@ -184,8 +184,42 @@ Abbreviations: PO = page object/component, F = flow.
 
 ## Totals
 
-421 NUnit test cases discovered (parameterised cases counted individually):
-- 265 run without any login (Public, Smoke-public, SEO, Responsive, visitor sell flow, visitor offer page),
-- 156 need a manual-auth session (Buyer 35, Seller 24, Admin 99; the two client-blocked admin cases count in both),
+519 NUnit test cases discovered (parameterised cases counted individually, verified by `dotnet test --list-tests`):
+- ~355 run without any login (Public, Smoke-public, SEO, Responsive, visitor sell flow, visitor offer page),
+- ~164 need a manual-auth session (Buyer 37, Seller 28, Admin 99; the two client-blocked admin cases count in both),
 - 15 are in WritesData fixtures/methods (guarded by Allow*Tests switches), 1 of them Destructive,
 - 2 are tagged KnownIssue (they document current application bugs and are expected to fail until fixed).
+
+Changes since initial count (421 → 519):
+- +12 responsive test cases (4 new pages in ViewportsAndPages: /brand/bmw, /news, /info/how-it-works, /contact-us × 3 viewports),
+- +16 public smoke cases (8 new routes in PublicPages.json × 2 smoke methods),
+- +2 anonymous access tests (Login_Popup_Country_Dropdown_Has_India_Option, Login_Popup_Phone_Input_Exists_And_Continue_Button_Starts_Disabled),
+- +3 listing detail tests (Listing_Detail_Shows_Specs_Grid_With_Vehicle_Information, Listing_Detail_Page_Shows_Related_Listings, Listing_Detail_Page_Shows_Back_To_Listings_Button),
+- +1 buyer smoke case (/personal/payments TestCase),
+- +1 seller sell flow assertion (SummaryCoverSource cover image check — existing method, new assertion),
+- +4 public auction tests (Public/AuctionTests.cs — **NOTE:** duplicates Auctions/AuctionTests.cs; consider merging).
+
+## Unused page-object properties (safe to test)
+
+18 read-only PO properties have no test caller and could be covered:
+
+| Page Object / Component | Property | Suggested Test Class |
+|---|---|---|
+| MakeOfferPage | MonthlyEstimateText | MakeOfferPageTests |
+| MakeOfferPage | ReviewOfferText | MakeOfferPageTests |
+| StripePaymentPage | PaymentRowCount | PaymentTests |
+| ArticlesPage | ArticleTitleTexts | ArticleTests |
+| ArticleDetailsPage | ImageElement | ArticleTests |
+| ArticleDetailsPage | FeaturedListingCount | ArticleTests |
+| ErrorPage | HeadlineText | ErrorPageTests |
+| ImageUploadComponent | BrokenPreviewCount | SellerSellFlowTests |
+| ImageUploadComponent | MinimumPhotosMessage | SellerSellFlowTests |
+| LocationSelectorComponent | VisibleSuggestions | VehicleLookupTests |
+| PriceSelectorComponent | MarketValueText | VehicleLookupTests |
+| PriceSelectorComponent | PriceTagText | VehicleLookupTests |
+| PriceSelectorComponent | NextEnabled | VehicleLookupTests |
+| AdditionalServicesComponent | DisabledServiceTitles | ContactOwnerAndServicesTests |
+| AdminModuleCatalog | WithAddForms | AdminModuleTests |
+| AdminModuleCatalog | AllAddForms | AdminModuleTests |
+| AdminModuleCatalog | AdminOnly | AdminModuleTests |
+| AdminPage | AddButtonHrefs | AdminModuleTests |
